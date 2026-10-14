@@ -118,7 +118,7 @@ function onError(error: WarpCheckoutError) {
 </template>
 ```
 
-The modal closes on Escape, the backdrop or its close button (emits `cancel`), and after the customer clicks "Back to merchant" on the success page (emits `return`).
+The modal closes on Escape, the backdrop or its close button (emits `cancel` if the payment has not completed), after the customer cancels on the checkout page (emits `cancel`), and after the customer clicks "Back to merchant" on the success page (emits `return`). Every time the modal or popup closes, `close` is emitted last.
 
 ### Popup fallback
 
@@ -158,7 +158,7 @@ const { openModal, openPopup, close, status, sessionId, isOpen, error } = useWar
 </template>
 ```
 
-`openModal` and `openPopup` accept options that override the ones given to `useWarpCheckout`, and resolve to the checkout instance, or `null` if it could not be opened (see `error`). The checkout closes automatically when the component unmounts.
+`openModal` and `openPopup` accept options that override the ones given to `useWarpCheckout`, and resolve to the checkout instance, or `null` if it could not be opened (see `error`). `isOpen` becomes `false` whenever the modal or popup closes, including when the customer closes it after paying (the `onClose` option is called then), and on `close()`. The checkout closes automatically when the component unmounts.
 
 ### Global registration
 
@@ -205,16 +205,19 @@ Events are UI signals so you can update the page. They are not proof of payment.
 
 The default slot receives `{ loading }`. Without a slot the label is "Pay with Warp".
 
-Events (both components):
+Events (both components unless noted):
 
 | Event | Payload | When |
 | ----- | ------- | ---- |
 | `ready` | | The checkout page loaded |
 | `status` | `CheckoutStatus` | On load and whenever the status changes: `pending`, `processing`, `completed`, `failed`, `expired` |
 | `complete` | | The status became `completed` |
-| `cancel` | | The customer cancelled or closed the checkout |
+| `cancel` | | The customer cancelled, or closed the modal or popup before the payment completed |
 | `return` | | The customer clicked "Back to merchant" on the success page |
 | `error` | `WarpCheckoutError` | The checkout could not be opened. `error.code` is `invalid_checkout_url`, `fetch_failed`, `popup_blocked` or `load_failed` |
+| `close` | | `<PayWithWarpButton>` only, modal and popup modes. The checkout closed, after any `cancel` or `return`, including when the customer closes it after paying. Not emitted when you call the exposed `close()` |
+
+`useWarpCheckout` accepts the same callbacks as options (`onReady`, `onStatus`, `onComplete`, `onCancel`, `onReturn`, `onError`) plus `onClose`, which matches the `close` event.
 
 ## API
 

@@ -87,21 +87,89 @@ describe('useWarpCheckout', () => {
   })
 
   it('closes on cancel and return and forwards the callbacks', async () => {
-    const onCancel = vi.fn()
-    const onReturn = vi.fn()
-    const { checkout } = setup({ checkoutUrl: URL_A, onCancel, onReturn })
+    const events: string[] = []
+    const { checkout } = setup({
+      checkoutUrl: URL_A,
+      onCancel: () => events.push('cancel'),
+      onReturn: () => events.push('return'),
+      onClose: () => events.push('close'),
+    })
 
+    // @usewarp/js calls onCancel / onReturn, then onClose once it has closed itself.
     await checkout.openModal()
     lastOptions(modalMock).onCancel?.()
-    expect(onCancel).toHaveBeenCalledTimes(1)
+    expect(checkout.isOpen.value).toBe(true)
+    lastOptions(modalMock).onClose?.()
     expect(checkout.isOpen.value).toBe(false)
     expect(instances[0]!.destroy).toHaveBeenCalled()
 
     await checkout.openPopup()
     lastOptions(popupMock).onReturn?.()
-    expect(onReturn).toHaveBeenCalledTimes(1)
+    lastOptions(popupMock).onClose?.()
     expect(checkout.isOpen.value).toBe(false)
     expect(instances[1]!.destroy).toHaveBeenCalled()
+    expect(events).toEqual(['cancel', 'close', 'return', 'close'])
+  })
+
+  it('sets isOpen to false when the customer closes the modal after paying', async () => {
+    const onCancel = vi.fn()
+    const onClose = vi.fn()
+    const { checkout } = setup({ checkoutUrl: URL_A, onCancel, onClose })
+    await checkout.openModal()
+    const options = lastOptions(modalMock)
+    options.onStatus?.('completed')
+    options.onComplete?.()
+    expect(checkout.isOpen.value).toBe(true)
+    options.onClose?.()
+    expect(checkout.isOpen.value).toBe(false)
+    expect(checkout.status.value).toBe('completed')
+    expect(onClose).toHaveBeenCalledTimes(1)
+    expect(onCancel).not.toHaveBeenCalled()
+  })
+
+  it('sets isOpen to false when the popup window is closed', async () => {
+    const onClose = vi.fn()
+    const { checkout } = setup({ checkoutUrl: URL_A })
+    await checkout.openPopup({ onClose })
+    lastOptions(popupMock).onClose?.()
+    expect(checkout.isOpen.value).toBe(false)
+    expect(onClose).toHaveBeenCalledTimes(1)
+  })
+
+  it('sets isOpen to false when dismissed while still loading', async () => {
+    let resolve!: () => void
+    modalMock.mockImplementationOnce(
+      (options) =>
+        new Promise((r) => {
+          resolve = () => {
+            const inst = fakeInstance(options)
+            instances.push(inst)
+            r(inst as never)
+          }
+        }),
+    )
+    const onError = vi.fn()
+    const { checkout } = setup({ fetchCheckoutUrl: async () => URL_A, onError })
+    const pending = checkout.openModal()
+    lastOptions(modalMock).onClose?.()
+    expect(checkout.isOpen.value).toBe(false)
+    resolve()
+    await expect(pending).resolves.toBeNull()
+    expect(instances[0]!.destroy).toHaveBeenCalledTimes(1)
+    expect(onError).not.toHaveBeenCalled()
+  })
+
+  it('ignores onClose from a replaced or closed checkout', async () => {
+    const onClose = vi.fn()
+    const { checkout } = setup({ checkoutUrl: URL_A, onClose })
+    await checkout.openModal()
+    const first = lastOptions(modalMock)
+    await checkout.openModal()
+    first.onClose?.()
+    expect(checkout.isOpen.value).toBe(true)
+    checkout.close()
+    lastOptions(modalMock).onClose?.()
+    expect(onClose).not.toHaveBeenCalled()
   })
 
   it('opening again replaces the previous checkout', async () => {

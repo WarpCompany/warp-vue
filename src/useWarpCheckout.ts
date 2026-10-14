@@ -29,7 +29,11 @@ export interface UseWarpCheckoutReturn {
   status: Ref<CheckoutStatus | null>
   /** ID of the open session (`ps_...`), or `null`. */
   sessionId: Ref<string | null>
-  /** `true` from the moment a modal or popup is requested until it closes. */
+  /**
+   * `true` from the moment a modal or popup is requested until it closes for any reason
+   * (customer dismissal, also after a completed payment; cancel; return), `close()` is called,
+   * or opening fails.
+   */
   isOpen: Ref<boolean>
   /** Last error, cleared when a new checkout is opened. */
   error: Ref<WarpCheckoutError | null>
@@ -99,14 +103,17 @@ export function useWarpCheckout(options: UseWarpCheckoutOptions = {}): UseWarpCh
           if (active()) merged.onComplete?.()
         },
         onCancel: () => {
-          if (!active()) return
-          close()
-          merged.onCancel?.()
+          if (active()) merged.onCancel?.()
         },
         onReturn: () => {
+          if (active()) merged.onReturn?.()
+        },
+        // @usewarp/js calls this last whenever the modal or popup closes itself (dismissed by
+        // the customer, also after paying, or after cancel / return). Not called for close().
+        onClose: () => {
           if (!active()) return
           close()
-          merged.onReturn?.()
+          merged.onClose?.()
         },
         onError: (err) => {
           if (!active()) return

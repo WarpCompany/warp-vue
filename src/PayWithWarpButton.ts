@@ -1,6 +1,6 @@
 import { defineComponent, h, ref, type PropType } from 'vue'
 import { parseCheckoutUrl, type CheckoutTheme } from '@usewarp/js'
-import { checkoutEmits } from './emits'
+import { buttonEmits } from './emits'
 import { toCheckoutError } from './errors'
 import { useWarpCheckout } from './useWarpCheckout'
 
@@ -24,7 +24,7 @@ export const PayWithWarpButton = defineComponent({
     /** Disable the button. */
     disabled: { type: Boolean, default: false },
   },
-  emits: checkoutEmits,
+  emits: buttonEmits,
   setup(props, { emit, slots, expose }) {
     const loading = ref(false)
     const checkout = useWarpCheckout({
@@ -34,6 +34,7 @@ export const PayWithWarpButton = defineComponent({
       onCancel: () => emit('cancel'),
       onReturn: () => emit('return'),
       onError: (error) => emit('error', error),
+      onClose: () => emit('close'),
     })
 
     async function redirect(): Promise<void> {

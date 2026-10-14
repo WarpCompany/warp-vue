@@ -113,11 +113,26 @@ describe('<PayWithWarpButton>', () => {
     options.onStatus?.('completed')
     options.onComplete?.()
     options.onReturn?.()
+    options.onClose?.()
     expect(wrapper.emitted('ready')).toHaveLength(1)
     expect(wrapper.emitted('status')).toEqual([['completed']])
     expect(wrapper.emitted('complete')).toHaveLength(1)
     expect(wrapper.emitted('return')).toHaveLength(1)
+    expect(wrapper.emitted('close')).toHaveLength(1)
     expect(instances[0]!.destroy).toHaveBeenCalled()
+  })
+
+  it('emits close without cancel when the modal is closed after paying', async () => {
+    const wrapper = mount(PayWithWarpButton, { props: { fetchCheckoutUrl: async () => URL_A } })
+    await wrapper.find('button').trigger('click')
+    await flush()
+    const options = lastOptions(modalMock)
+    options.onComplete?.()
+    options.onClose?.()
+    expect(wrapper.emitted('close')).toHaveLength(1)
+    expect(wrapper.emitted('cancel')).toBeUndefined()
+    expect(instances[0]!.destroy).toHaveBeenCalled()
+    expect(wrapper.find('button').attributes('disabled')).toBeUndefined()
   })
 
   it('emits cancel', async () => {

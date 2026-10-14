@@ -9,3 +9,9 @@ export const checkoutEmits = {
   return: () => true,
   error: (_error: WarpCheckoutError) => true,
 }
+
+/** Emits of `<PayWithWarpButton>`: the shared ones plus `close` for the modal and popup. */
+export const buttonEmits = {
+  ...checkoutEmits,
+  close: () => true,
+}
