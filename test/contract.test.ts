@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest'
-import * as warp from '@usewarp/js'
+import * as warp from '@warpfi/js'
 
-// Runs against the real @usewarp/js to catch API drift between the two packages.
-describe('@usewarp/js contract', () => {
+// Runs against the real @warpfi/js to catch API drift between the two packages.
+describe('@warpfi/js contract', () => {
   it('exports the functions this package calls', () => {
     expect(typeof warp.mountCheckout).toBe('function')
     expect(typeof warp.openCheckoutModal).toBe('function')

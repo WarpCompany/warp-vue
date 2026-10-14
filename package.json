@@ -1,9 +1,12 @@
 {
-  "name": "@usewarp/vue",
+  "name": "@warpfi/vue",
   "version": "0.1.0",
   "description": "Vue 3 bindings for the Pay with Warp embedded checkout.",
   "license": "MIT",
-  "repository": "github:WarpCompany/warp-vue",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WarpCompany/warp-vue.git"
+  },
   "homepage": "https://developer.usewarp.net",
   "bugs": "https://github.com/WarpCompany/warp-vue/issues",
   "keywords": [
@@ -42,7 +45,7 @@
     "lint": "tsc --noEmit"
   },
   "dependencies": {
-    "@usewarp/js": "^0.1.0"
+    "@warpfi/js": "^0.1.0"
   },
   "peerDependencies": {
     "vue": ">=3.3.0"

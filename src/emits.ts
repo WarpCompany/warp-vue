@@ -1,4 +1,4 @@
-import type { CheckoutStatus, WarpCheckoutError } from '@usewarp/js'
+import type { CheckoutStatus, WarpCheckoutError } from '@warpfi/js'
 
 /** Runtime emits declaration shared by the components. */
 export const checkoutEmits = {

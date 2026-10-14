@@ -6,7 +6,7 @@ import {
   type CheckoutOptions,
   type CheckoutStatus,
   type WarpCheckoutError,
-} from '@usewarp/js'
+} from '@warpfi/js'
 import { toCheckoutError } from './errors'
 
 /** Options for `useWarpCheckout`. Cancellation is handled by `close()`, so `signal` is not accepted. */
@@ -108,7 +108,7 @@ export function useWarpCheckout(options: UseWarpCheckoutOptions = {}): UseWarpCh
         onReturn: () => {
           if (active()) merged.onReturn?.()
         },
-        // @usewarp/js calls this last whenever the modal or popup closes itself (dismissed by
+        // @warpfi/js calls this last whenever the modal or popup closes itself (dismissed by
         // the customer, also after paying, or after cancel / return). Not called for close().
         onClose: () => {
           if (!active()) return

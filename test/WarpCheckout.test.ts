@@ -3,7 +3,7 @@ import { mount } from '@vue/test-utils'
 import { nextTick } from 'vue'
 import { fakeInstance, flush, lastOptions, MockWarpCheckoutError } from './mock'
 
-vi.mock('@usewarp/js', async () => {
+vi.mock('@warpfi/js', async () => {
   const { MockWarpCheckoutError } = await import('./mock')
   return {
     mountCheckout: vi.fn(),
@@ -14,7 +14,7 @@ vi.mock('@usewarp/js', async () => {
   }
 })
 
-import { mountCheckout } from '@usewarp/js'
+import { mountCheckout } from '@warpfi/js'
 import { WarpCheckout } from '../src'
 
 const mountMock = vi.mocked(mountCheckout)

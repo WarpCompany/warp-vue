@@ -1,5 +1,5 @@
 import { vi } from 'vitest'
-import type { CheckoutOptions, CheckoutStatus } from '@usewarp/js'
+import type { CheckoutOptions, CheckoutStatus } from '@warpfi/js'
 
 export class MockWarpCheckoutError extends Error {
   readonly code: string

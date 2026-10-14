@@ -7,5 +7,5 @@ export default defineConfig({
   sourcemap: true,
   clean: true,
   target: 'es2020',
-  external: ['vue', '@usewarp/js'],
+  external: ['vue', '@warpfi/js'],
 })

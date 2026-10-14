@@ -3,7 +3,7 @@ import { createSSRApp, defineComponent, h, resolveComponent } from 'vue'
 import { renderToString } from 'vue/server-renderer'
 import { mount } from '@vue/test-utils'
 
-vi.mock('@usewarp/js', async () => {
+vi.mock('@warpfi/js', async () => {
   const { MockWarpCheckoutError } = await import('./mock')
   return {
     mountCheckout: vi.fn(),
@@ -14,7 +14,7 @@ vi.mock('@usewarp/js', async () => {
   }
 })
 
-import { mountCheckout } from '@usewarp/js'
+import { mountCheckout } from '@warpfi/js'
 import { PayWithWarpButton, WarpCheckout, WarpCheckoutError, WarpPlugin } from '../src'
 
 describe('WarpPlugin', () => {

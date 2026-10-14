@@ -1,5 +1,5 @@
 import { defineComponent, h, ref, type PropType } from 'vue'
-import { parseCheckoutUrl, type CheckoutTheme } from '@usewarp/js'
+import { parseCheckoutUrl, type CheckoutTheme } from '@warpfi/js'
 import { buttonEmits } from './emits'
 import { toCheckoutError } from './errors'
 import { useWarpCheckout } from './useWarpCheckout'

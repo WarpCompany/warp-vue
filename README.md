@@ -12,14 +12,14 @@
 </p>
 
 <p align="center">
-  <a href="https://www.npmjs.com/package/@usewarp/vue"><img src="https://img.shields.io/npm/v/@usewarp/vue?color=9E1FAA" alt="npm" /></a>
+  <a href="https://www.npmjs.com/package/@warpfi/vue"><img src="https://img.shields.io/npm/v/@warpfi/vue?color=9E1FAA" alt="npm" /></a>
   <a href="./LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue" alt="License: MIT" /></a>
   <a href="https://developer.usewarp.net"><img src="https://img.shields.io/badge/docs-developer.usewarp.net-9E1FAA" alt="Docs" /></a>
 </p>
 
 ---
 
-Your server creates a checkout session with your secret key and returns its `checkout_url`. These components show that checkout inside your page (inline, in a modal or in a popup) so the customer never leaves your site. The customer pays, and Warp notifies your server with a signed webhook. This package wraps [`@usewarp/js`](https://github.com/WarpCompany/warp-js).
+Your server creates a checkout session with your secret key and returns its `checkout_url`. These components show that checkout inside your page (inline, in a modal or in a popup) so the customer never leaves your site. The customer pays, and Warp notifies your server with a signed webhook. This package wraps [`@warpfi/js`](https://github.com/WarpCompany/warp-js).
 
 > [!WARNING]
 > This project is under active development. Test with `sk_test_` keys on testnets before accepting mainnet payments.
@@ -39,16 +39,16 @@ Your server creates a checkout session with your secret key and returns its `che
 Requirements: Vue 3.3 or later.
 
 ```bash
-npm install @usewarp/vue
+npm install @warpfi/vue
 ```
 
 ## Usage
 
-Create the session on your server with [`@usewarp/node`](https://github.com/WarpCompany/warp-node). Never use your secret key in the browser. In Nuxt, a server route looks like this:
+Create the session on your server with [`@warpfi/node`](https://github.com/WarpCompany/warp-node). Never use your secret key in the browser. In Nuxt, a server route looks like this:
 
 ```ts
 // server/api/checkout.post.ts
-import Warp from '@usewarp/node'
+import Warp from '@warpfi/node'
 
 const warp = new Warp(process.env.WARP_SECRET_KEY!)
 
@@ -67,7 +67,7 @@ Then render the checkout. `fetch-checkout-url` is called once the component moun
 
 ```vue
 <script setup lang="ts">
-import { WarpCheckout } from '@usewarp/vue'
+import { WarpCheckout } from '@warpfi/vue'
 
 async function createSession() {
   const { checkoutUrl } = await $fetch<{ checkoutUrl: string }>('/api/checkout', { method: 'POST' })
@@ -94,7 +94,7 @@ Outside Nuxt, use `fetch` in place of `$fetch` and any backend that returns the 
 
 ```vue
 <script setup lang="ts">
-import { PayWithWarpButton, type WarpCheckoutError } from '@usewarp/vue'
+import { PayWithWarpButton, type WarpCheckoutError } from '@warpfi/vue'
 
 async function createSession() {
   const res = await fetch('/api/checkout', { method: 'POST' })
@@ -136,7 +136,7 @@ The popup window is opened synchronously in the click handler, so browsers do no
 
 ```vue
 <script setup lang="ts">
-import { useWarpCheckout } from '@usewarp/vue'
+import { useWarpCheckout } from '@warpfi/vue'
 
 async function createSession() {
   const res = await fetch('/api/checkout', { method: 'POST' })
@@ -166,7 +166,7 @@ The components can be imported where they are used, or registered globally:
 
 ```ts
 import { createApp } from 'vue'
-import { WarpPlugin } from '@usewarp/vue'
+import { WarpPlugin } from '@warpfi/vue'
 import App from './App.vue'
 
 createApp(App).use(WarpPlugin).mount('#app')
@@ -227,8 +227,8 @@ Events (both components unless noted):
 | `PayWithWarpButton` | Button that opens the checkout in a modal, popup or by redirect |
 | `useWarpCheckout(options)` | Composable returning `{ openModal, openPopup, close, status, sessionId, isOpen, error }` |
 | `WarpPlugin` | Optional plugin that registers both components globally |
-| `WarpCheckoutError` | Error class with a `code` (re-exported from `@usewarp/js`) |
-| `CheckoutStatus`, `CheckoutTheme`, `CheckoutOptions`, `CheckoutInstance` | Types re-exported from `@usewarp/js` |
+| `WarpCheckoutError` | Error class with a `code` (re-exported from `@warpfi/js`) |
+| `CheckoutStatus`, `CheckoutTheme`, `CheckoutOptions`, `CheckoutInstance` | Types re-exported from `@warpfi/js` |
 | `PayWithWarpMode`, `UseWarpCheckoutOptions`, `UseWarpCheckoutReturn` | Types for the button and composable |
 
 ## Documentation
@@ -251,13 +251,13 @@ npm test
 npm run build
 ```
 
-Until `@usewarp/js` is published to npm, clone [warp-js](https://github.com/WarpCompany/warp-js) next to this repository, build it, and install it with `npm install --no-save ../warp-js` instead of `npm install`.
+Until `@warpfi/js` is published to npm, clone [warp-js](https://github.com/WarpCompany/warp-js) next to this repository, build it, and install it with `npm install --no-save ../warp-js` instead of `npm install`.
 
 ## Project structure
 
 ```
 src/            Components, composable, plugin and shared helpers
-test/           Vitest tests (jsdom, @usewarp/js mocked)
+test/           Vitest tests (jsdom, @warpfi/js mocked)
 ```
 
 ## Contributing

@@ -1,5 +1,5 @@
 import { defineComponent, h, onBeforeUnmount, onMounted, ref, watch, type PropType } from 'vue'
-import { mountCheckout, type CheckoutInstance, type CheckoutTheme, type WarpCheckoutError } from '@usewarp/js'
+import { mountCheckout, type CheckoutInstance, type CheckoutTheme, type WarpCheckoutError } from '@warpfi/js'
 import { checkoutEmits } from './emits'
 import { toCheckoutError } from './errors'
 

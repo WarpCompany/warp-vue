@@ -1,4 +1,4 @@
-import { WarpCheckoutError } from '@usewarp/js'
+import { WarpCheckoutError } from '@warpfi/js'
 
 /** Returns `error` if it is already a WarpCheckoutError, otherwise wraps it. */
 export function toCheckoutError(

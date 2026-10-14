@@ -1,6 +1,6 @@
 # Contributing
 
-Thanks for your interest in @usewarp/vue.
+Thanks for your interest in @warpfi/vue.
 
 ## Development
 

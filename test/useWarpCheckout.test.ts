@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { effectScope } from 'vue'
 import { fakeInstance, flush, lastOptions, MockWarpCheckoutError } from './mock'
 
-vi.mock('@usewarp/js', async () => {
+vi.mock('@warpfi/js', async () => {
   const { MockWarpCheckoutError } = await import('./mock')
   return {
     mountCheckout: vi.fn(),
@@ -13,7 +13,7 @@ vi.mock('@usewarp/js', async () => {
   }
 })
 
-import { openCheckoutModal, openCheckoutPopup } from '@usewarp/js'
+import { openCheckoutModal, openCheckoutPopup } from '@warpfi/js'
 import { useWarpCheckout } from '../src'
 
 const modalMock = vi.mocked(openCheckoutModal)
@@ -95,7 +95,7 @@ describe('useWarpCheckout', () => {
       onClose: () => events.push('close'),
     })
 
-    // @usewarp/js calls onCancel / onReturn, then onClose once it has closed itself.
+    // @warpfi/js calls onCancel / onReturn, then onClose once it has closed itself.
     await checkout.openModal()
     lastOptions(modalMock).onCancel?.()
     expect(checkout.isOpen.value).toBe(true)

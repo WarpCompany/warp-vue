@@ -3,7 +3,7 @@ import { mount } from '@vue/test-utils'
 import { h } from 'vue'
 import { fakeInstance, flush, lastOptions, MockWarpCheckoutError } from './mock'
 
-vi.mock('@usewarp/js', async () => {
+vi.mock('@warpfi/js', async () => {
   const { MockWarpCheckoutError } = await import('./mock')
   return {
     mountCheckout: vi.fn(),
@@ -14,7 +14,7 @@ vi.mock('@usewarp/js', async () => {
   }
 })
 
-import { openCheckoutModal, openCheckoutPopup, parseCheckoutUrl } from '@usewarp/js'
+import { openCheckoutModal, openCheckoutPopup, parseCheckoutUrl } from '@warpfi/js'
 import { PayWithWarpButton } from '../src'
 
 const modalMock = vi.mocked(openCheckoutModal)
