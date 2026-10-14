@@ -1,0 +1,6 @@
+node_modules
+dist
+coverage
+.env*
+# Not committed until @usewarp/js is published to npm (CI installs it from source).
+package-lock.json

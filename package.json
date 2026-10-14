@@ -1,0 +1,61 @@
+{
+  "name": "@usewarp/vue",
+  "version": "0.1.0",
+  "description": "Vue 3 bindings for the Pay with Warp embedded checkout.",
+  "license": "MIT",
+  "repository": "github:WarpCompany/warp-vue",
+  "homepage": "https://developer.usewarp.net",
+  "bugs": "https://github.com/WarpCompany/warp-vue/issues",
+  "keywords": [
+    "warp",
+    "pay with warp",
+    "checkout",
+    "payments",
+    "crypto",
+    "vue",
+    "nuxt"
+  ],
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsup",
+    "test": "vitest run",
+    "lint": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@usewarp/js": "^0.1.0"
+  },
+  "peerDependencies": {
+    "vue": ">=3.3.0"
+  },
+  "devDependencies": {
+    "@vue/test-utils": "^2.4.11",
+    "jsdom": "^26.1.0",
+    "tsup": "^8.5.1",
+    "typescript": "^5.9.3",
+    "vitest": "^3.2.7",
+    "vue": "^3.5.44"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
