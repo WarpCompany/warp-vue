@@ -9,45 +9,18 @@ permissions:
   contents: read
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
     strategy:
       matrix:
         node-version: [20, 22]
     steps:
       - uses: actions/checkout@v4
-        with:
-          path: warp-vue
-
-      # @warpfi/js is not on npm yet, so build it from source and install it without saving until it is published.
-      - uses: actions/checkout@v4
-        with:
-          repository: WarpCompany/warp-js
-          path: warp-js
-          token: ${{ secrets.WARP_JS_TOKEN || github.token }}
-
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-
-      - name: Build @warpfi/js
-        working-directory: warp-js
-        run: |
-          npm ci
-          npm run build
-
-      - name: Install
-        working-directory: warp-vue
-        run: npm install --no-save ../warp-js
-
-      - name: Lint
-        working-directory: warp-vue
-        run: npm run lint
-
-      - name: Test
-        working-directory: warp-vue
-        run: npm test
-
-      - name: Build
-        working-directory: warp-vue
-        run: npm run build
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm test
+      - run: npm run build
